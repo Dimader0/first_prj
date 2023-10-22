@@ -1,5 +1,5 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication,  QWidget, QLabel, QVBoxLayout, QHBoxLayout, QRadioButton, QMessageBox
+from PyQt5.QtWidgets import QApplication,  QWidget, QLabel, QVBoxLayout, QHBoxLayout, QRadioButton, QMessageBox, QButtonGroup
 
 
 app = QApplication([])
@@ -19,10 +19,17 @@ mw.resize(500, 400)
 mw.setWindowTitle('Memorycard')
 
 question = QLabel("Quest ???")
+rb_group = QButtonGroup()
+
 rb1 = QRadioButton("ans1")
 rb2 = QRadioButton("ans2")
 rb3 = QRadioButton("ans3")
 rb4 = QRadioButton("ans4")
+
+rb_group.addButton(rb1)
+rb_group.addButton(rb2)
+rb_group.addButton(rb3)
+rb_group.addButton(rb4)
 
 main_layout = QVBoxLayout()
 h1_layout = QHBoxLayout()
