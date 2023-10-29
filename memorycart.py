@@ -1,18 +1,98 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication,  QWidget, QLabel, QVBoxLayout, QHBoxLayout, QRadioButton, QMessageBox, QButtonGroup
+from random import shuffle
 
+questions_list = [
+    ["Какая столица Франции?",
+     "Париж",
+     "Милан",
+     "Берлин",
+     "Лондон"],
+    
+    ["Сколько планет в Солнечной системе?",
+     "Восемь",
+     "Семь",
+     "Девять",
+     "Шесть"],
+    
+    ["Кто написал роман 'Война и мир'?",
+     "Лев Толстой",
+     "Фёдор Достоевский",
+     "Иван Тургенев",
+     "Александр Пушкин"],
+    
+    ["Какой химический элемент обозначается символом 'H'?",
+     "Водород",
+     "Гелий",
+     "Кислород",
+     "Углерод"],
+
+    ["Какое животное является символом бренда Ferrari?",
+     "Лошадь",
+     "Бык",
+     "Скорпион",
+     "Дельфин"],
+    
+    ["Сколько долей в целом составляют две половины?",
+     "Одну",
+     "Три",
+     "Четыре",
+     "Две"],
+    
+    ["Какой год был объявлен Годом Олимпиады в Токио?",
+     "2020",
+     "2016",
+     "2022",
+     "2018"],
+    
+    ["Какой самый крупный материк на Земле?",
+     "Африка",
+     "Европа",
+     "Азия",
+     "Австралия"],
+     
+    ["Какая планета известна как 'Красная планета'?",
+     "Марс",
+     "Венера",
+     "Юпитер",
+     "Уран"],
+    
+    ["Какое животное является символом года в китайском календаре в 2023 году?",
+     "Кролик",
+     "Дракон",
+     "Тигр",
+     "Змея"]
+]
 
 app = QApplication([])
 
-def win():
-    ms_win = QMessageBox()
-    ms_win.setText("правильно")
-    ms_win.exec_()
+def result():
+    mess = QMessageBox()
+    if rb_group.checkedButton() is buttons[0]:
+        mess.setText("правильно")
+    else:
+        mess.setText("неправильно")
+    
+    def new_question():
+        global buttons
+        shuffle(buttons)
+        buttons[0].setText('New 1')
+        buttons[1].setText('New 2')
+        buttons[2].setText('New 3')
+        buttons[3].setText('New 4')
+    
+    mess.exec_()
+    new_question()
 
-def lose():
-    ms_lose = QMessageBox()
-    ms_lose.setText("неправильно")
-    ms_lose.exec_()
+# def win():
+#     ms_win = QMessageBox()
+#     ms_win.setText("правильно")
+#     ms_win.exec_()
+
+# def lose():
+#     ms_lose = QMessageBox()
+#     ms_lose.setText("неправильно")
+#     ms_lose.exec_()
 
 mw = QWidget()
 mw.resize(500, 400)
@@ -46,10 +126,9 @@ main_layout.addLayout(h1_layout)
 
 mw.setLayout(main_layout)
 
-rb1.clicked.connect(win)
-rb2.clicked.connect(lose)
-rb3.clicked.connect(lose)
-rb3.clicked.connect(lose)
+rb_group.buttonClicked.connect(result)
+
+buttons = rb_group.buttons()
 
 mw.show()
 app.exec_()
