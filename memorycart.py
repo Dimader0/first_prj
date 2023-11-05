@@ -1,8 +1,8 @@
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication,  QWidget, QLabel, QVBoxLayout, QHBoxLayout, QRadioButton, QMessageBox, QButtonGroup
+from PyQt5.QtWidgets import QApplication,  QWidget, QLabel, QVBoxLayout, QHBoxLayout, QRadioButton, QMessageBox, QButtonGroup, QPushButton
 from random import shuffle
 
-i = 1
+i = 0
 
 questions_list = [
     ["Какая столица Франции?",
@@ -67,46 +67,67 @@ questions_list = [
 ]
 
 app = QApplication([])
+mw = QWidget()
+mw.resize(500, 400)
+mw.setWindowTitle('Memorycard')
 
-def result():
+def start():
+    start_layout.deleteLater()
+    mw.setLayout(start_layout)
+    new_question(i)
+
+def new_question(i):
+    global buttons
+    global question
+    shuffle(buttons)
+    buttons[0].setText(questions_list[i][1])
+    buttons[1].setText(questions_list[i][2])
+    buttons[2].setText(questions_list[i][3])
+    buttons[3].setText(questions_list[i][4])
+    question.setText(questions_list[i][0])
+
+def answer():
     global i
-    if i <= 9:
+    if i <= len(questions_list):
         mess = QMessageBox()
         if rb_group.checkedButton() is buttons[0]:
             mess.setText("правильно")
         else:
             mess.setText("неправильно")
         
-        def new_question():
-            global buttons
-            global question
-            shuffle(buttons)
-            buttons[0].setText(questions_list[i][1])
-            buttons[1].setText(questions_list[i][2])
-            buttons[2].setText(questions_list[i][3])
-            buttons[3].setText(questions_list[i][4])
-            question.setText(questions_list[i][0])
 
         mess.exec_()
         new_question()
         i += 1
 
-    elif i > 9:
-        i = 0
+   # elif i > 9:
+      #  i = 0
 
-# def win():
-#     ms_win = QMessageBox()
-#     ms_win.setText("правильно")
-#     ms_win.exec_()
+def result(total_qustion, right_ans):
+    mess = QMessageBox()
+    mess.setText(f"Тест завершений\nРезультат, правильних відповідей:{round(right_ans/total_qustion*100, 2)}%")
+    mess.exec_()
 
-# def lose():
-#     ms_lose = QMessageBox()
-#     ms_lose.setText("неправильно")
-#     ms_lose.exec_()
 
-mw = QWidget()
-mw.resize(500, 400)
-mw.setWindowTitle('Memorycard')
+
+'''def win():
+    ms_win = QMessageBox()
+    ms_win.setText("правильно")
+    ms_win.exec_()
+
+def lose():
+    ms_lose = QMessageBox()
+    ms_lose.setText("неправильно")
+    ms_lose.exec_()'''
+
+
+
+start_lable = QLabel('Програма для тесту\nНажми кнопку, для початку')
+start_button = QPushButton('Початок')
+start_layout = QVBoxLayout()
+start_layout.addWidget(start_lable, alignment=Qt.AlignCenter)
+start_layout.addWidget(start_button, alignment=Qt.AlignCenter)
+
 
 question = QLabel(questions_list[i][0])
 rb_group = QButtonGroup()
@@ -134,9 +155,10 @@ main_layout.addWidget(question, alignment=Qt.AlignCenter)
 main_layout.addLayout(h2_layout)
 main_layout.addLayout(h1_layout)
 
-mw.setLayout(main_layout)
+mw.setLayout(start_layout)
 
-rb_group.buttonClicked.connect(result)
+rb_group.buttonClicked.connect(answer)
+start_button.clicked.connect(start)
  
 buttons = rb_group.buttons()
 
