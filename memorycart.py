@@ -2,6 +2,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication,  QWidget, QLabel, QVBoxLayout, QHBoxLayout, QRadioButton, QMessageBox, QButtonGroup
 from random import shuffle
 
+i = 1
+
 questions_list = [
     ["Какая столица Франции?",
      "Париж",
@@ -67,22 +69,30 @@ questions_list = [
 app = QApplication([])
 
 def result():
-    mess = QMessageBox()
-    if rb_group.checkedButton() is buttons[0]:
-        mess.setText("правильно")
-    else:
-        mess.setText("неправильно")
-    
-    def new_question():
-        global buttons
-        shuffle(buttons)
-        buttons[0].setText('New 1')
-        buttons[1].setText('New 2')
-        buttons[2].setText('New 3')
-        buttons[3].setText('New 4')
-    
-    mess.exec_()
-    new_question()
+    global i
+    if i <= 9:
+        mess = QMessageBox()
+        if rb_group.checkedButton() is buttons[0]:
+            mess.setText("правильно")
+        else:
+            mess.setText("неправильно")
+        
+        def new_question():
+            global buttons
+            global question
+            shuffle(buttons)
+            buttons[0].setText(questions_list[i][1])
+            buttons[1].setText(questions_list[i][2])
+            buttons[2].setText(questions_list[i][3])
+            buttons[3].setText(questions_list[i][4])
+            question.setText(questions_list[i][0])
+
+        mess.exec_()
+        new_question()
+        i += 1
+
+    elif i > 9:
+        i = 0
 
 # def win():
 #     ms_win = QMessageBox()
@@ -98,13 +108,13 @@ mw = QWidget()
 mw.resize(500, 400)
 mw.setWindowTitle('Memorycard')
 
-question = QLabel("Quest ???")
+question = QLabel(questions_list[i][0])
 rb_group = QButtonGroup()
 
-rb1 = QRadioButton("ans1")
-rb2 = QRadioButton("ans2")
-rb3 = QRadioButton("ans3")
-rb4 = QRadioButton("ans4")
+rb1 = QRadioButton(questions_list[0][1])
+rb2 = QRadioButton(questions_list[0][2])
+rb3 = QRadioButton(questions_list[0][3])
+rb4 = QRadioButton(questions_list[0][4])
 
 rb_group.addButton(rb1)
 rb_group.addButton(rb2)
@@ -127,7 +137,7 @@ main_layout.addLayout(h1_layout)
 mw.setLayout(main_layout)
 
 rb_group.buttonClicked.connect(result)
-
+ 
 buttons = rb_group.buttons()
 
 mw.show()
