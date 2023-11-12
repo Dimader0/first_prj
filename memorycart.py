@@ -94,7 +94,10 @@ def new_question(i):
 def answer():
     global i
     global a
-    if i < len(questions_list):
+    if i <= len(questions_list):
+        if i == len(questions_list):
+            mess = QMessageBox()
+            mess.setText("остання відповідь")
         mess = QMessageBox()
         if rb_group.checkedButton() is buttons[0]:
             mess.setText("правильно")
@@ -106,9 +109,9 @@ def answer():
         mess.exec_()
         new_question(i)
         i += 1
-    else:
-        question_box.hide()
-        result(len(questions_list), a)
+
+    question_box.hide()
+    result(len(questions_list), a)
         
 
    # elif i > 9:
