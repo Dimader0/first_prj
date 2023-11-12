@@ -107,8 +107,9 @@ def answer():
         new_question(i)
         i += 1
     else:
+        question_box.hide()
         result(len(questions_list), a)
-
+        
 
    # elif i > 9:
       #  i = 0
