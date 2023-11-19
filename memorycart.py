@@ -98,21 +98,22 @@ def answer():
         if i == len(questions_list):
             mess = QMessageBox()
             mess.setText("остання відповідь")
-        mess = QMessageBox()
         if rb_group.checkedButton() is buttons[0]:
+            mess = QMessageBox()
             mess.setText("правильно")
             a += 1
         else:
+            mess = QMessageBox()
             mess.setText("неправильно")
-        
 
+    if i < len(questions_list):
         mess.exec_()
         new_question(i)
         i += 1
-
-    question_box.hide()
-    result(len(questions_list), a)
-        
+    elif i == len(questions_list):
+        mess.exec_()
+        question_box.hide()
+        result(len(questions_list), a)    
 
    # elif i > 9:
       #  i = 0
@@ -144,7 +145,7 @@ start_layout.addWidget(start_button, alignment=Qt.AlignCenter)
 
 start_box.setLayout(start_layout)
 
-question = QLabel(questions_list[i][0])
+question = QLabel(questions_list[0][0])
 rb_group = QButtonGroup()
 
 rb1 = QRadioButton(questions_list[0][1])
