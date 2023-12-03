@@ -98,28 +98,29 @@ def answer():
         if i == len(questions_list):
             mess = QMessageBox()
             mess.setText("остання відповідь")
-        mess = QMessageBox()
         if rb_group.checkedButton() is buttons[0]:
+            mess = QMessageBox()
             mess.setText("правильно")
             a += 1
         else:
+            mess = QMessageBox()
             mess.setText("неправильно")
-        
 
+    if i < len(questions_list):
         mess.exec_()
         new_question(i)
         i += 1
-
-    question_box.hide()
-    result(len(questions_list), a)
-        
+    elif i == len(questions_list):
+        mess.exec_()
+        question_box.hide()
+        result(len(questions_list), a)    
 
    # elif i > 9:
-      #  i = 0
+      #  i = 0    
 
 def result(total_qustion, right_ans):
     mess = QMessageBox()
-    mess.setText(f"Тест завершений\nРезультат, правильних відповідей:{round(right_ans/total_qustion*100, 2)}%")
+    mess.setText(f"Тест завершено\nРезультат, правильних відповідей:{round(right_ans/total_qustion*100, 2)}%")
     mess.exec_()
 
 
@@ -136,7 +137,7 @@ def lose():
 start_box = QGroupBox('Start')
 question_box = QGroupBox('Question')
 
-start_lable = QLabel('Програма для тесту\nНажми кнопку, для початку')
+start_lable = QLabel('Програма для тесту\nНатисни кнопку, для початку')
 start_button = QPushButton('Початок')
 start_layout = QVBoxLayout()
 start_layout.addWidget(start_lable, alignment=Qt.AlignCenter)
@@ -144,7 +145,7 @@ start_layout.addWidget(start_button, alignment=Qt.AlignCenter)
 
 start_box.setLayout(start_layout)
 
-question = QLabel(questions_list[i][0])
+question = QLabel(questions_list[0][0])
 rb_group = QButtonGroup()
 
 rb1 = QRadioButton(questions_list[0][1])
