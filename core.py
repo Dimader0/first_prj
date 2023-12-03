@@ -12,31 +12,44 @@ except:
 
 def show_note():
     textEdit.clear()
-    key = listnotes.selectedItems()[0].text()
-    textEdit.setText(notes[key]["текст"])
+    key = listnotes.selectedItems()[0].text() # отримати назву замітки, текст якої треба відобразити
+    textEdit.setText(notes[key]["текст"]) # за ключами отримати текст замітки і вставити її у віджет
 
 def add_note():
-    note_name, ok = QInputDialog.getText(mv, "Додати замітку", "Назва замітки")
-    if ok and note_name != "":
-        notes[note_name] = {"текст": "", "теги": []}
-        listnotes.addItem(note_name)
-        listtags.addItems(notes[note_name]["теги"])
+    note_name, ok = QInputDialog.getText(mv, "Додати замітку", "Назва замітки") # діалогове вікно створення нової замітки
+    if ok and note_name != "": # чи ми ввели назву замітки і натистули ок
+        notes[note_name] = {"текст": "", "теги": []} # створюється структура замітки з назвою
+        listnotes.addItem(note_name) # назва замітки поміщається у віджет списку заміток
+        listtags.addItems(notes[note_name]["теги"]) # теги замітки поміщаються у спимок тегів
         print(notes)
 
 def save_note():
     if listnotes.selectedItems():
-        key = listnotes.selectedItems()[0].text()
-        notes[key]["текст"] = textEdit.toPlainText()
+        key = listnotes.selectedItems()[0].text() # отримуємо назву замітки, яку ми обрали
+        notes[key]["текст"] = textEdit.toPlainText() # отримуємо текст замітки
         with open("data.json", "w", encoding= "utf-8") as file:
             json.dump(notes, file, sort_keys= True, ensure_ascii= False)
     else:
         print("Ви не вибрали замітку!")
 
 def del_note():
-    pass
+    if listnotes.selectedItems():
+        key = listnotes.selectedItems()[0].text()
+        del notes[key] # видаляємо елемент словника за ключем
+        # чистимо віджети
+        listnotes.clear()
+        textEdit.clear()
+        listtags.clear()
+        # оновлюємо віджет новими даними
+        listnotes.addItems(notes)
+        with open("data.json", "w", encoding= "utf-8") as file:
+            json.dump(notes, file, sort_keys= True, ensure_ascii= False)
+    else:
+        print("Ви не вибрали замітку!")
 
 btn_createnote.clicked.connect(add_note)
 btn_savenote.clicked.connect(save_note)
+btn_delitenote.clicked.connect(del_note)
 listnotes.itemClicked.connect(show_note)
 
 mv.show()
