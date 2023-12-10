@@ -64,20 +64,20 @@ def add_tag():
 
 def del_tag():
     if listnotes.selectedItems():
-        key = listnotes.selectedItems()[0].text()
-        tag = listtags.selectedItems()[0].text()
-        notes[key]["теги"].remove(tag)
+        key = listnotes.selectedItems()[0].text() # отримуємо назву замітки
+        tag = listtags.selectedItems()[0].text() # отримуємо назву тегу
+        notes[key]["теги"].remove(tag) # видаляємо тег з словника
         listtags.clear()
-        listtags.addItems(notes[key]["теги"])
+        listtags.addItems(notes[key]["теги"]) # додавання заміток у віджет з оновленими тегами
         with open("data.json", "w", encoding= "utf-8") as file:
             json.dump(notes, file, sort_keys= True, ensure_ascii= False)
     else:
         print("Ви не вибрали замітку для видалення тегу!")
 
 def search_tag():
-    tag = lineEdit.text()
-    if btn_searchtag.text() == "Шукати замітки по тегу" and tag:
-        note_filtered = dict()
+    tag = lineEdit.text() # отримуємо назву тегу
+    if btn_searchtag.text() == "Шукати замітки по тегу" and tag: # перевірка введення тегу
+        note_filtered = dict() # словник відфільтрованих заміток
         for note in notes:
             if tag in notes[note]["теги"]:
                 note_filtered[note] = notes[note]
