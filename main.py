@@ -13,6 +13,8 @@ listtags = QListWidget()
 inputtag = QLineEdit()
 labelnotes = QLabel("Список заміток")
 labeltags = QLabel("Список тегів")
+
+btn_save_to_txt = QPushButton("Зберегти в txt")
 btn_createnote = QPushButton("Створити замітку")
 btn_savenote = QPushButton("Зберегти замітку")
 btn_delitenote = QPushButton("Видалити замітку")
@@ -38,6 +40,7 @@ row_1.addWidget(btn_delitenote)
 
 row_2 = QHBoxLayout()
 row_2.addWidget(btn_savenote)
+row_2.addWidget(btn_save_to_txt)
 
 col_2.addLayout(row_1)
 col_2.addLayout(row_2)
