@@ -12,8 +12,10 @@ except:
 
 def show_note():
     textEdit.clear()
+    listtags.clear()
     key = listnotes.selectedItems()[0].text() # отримати назву замітки, текст якої треба відобразити
     textEdit.setText(notes[key]["текст"]) # за ключами отримати текст замітки і вставити її у віджет
+    listtags.addItems(notes[key]["теги"])
 
 def add_note():
     note_name, ok = QInputDialog.getText(mv, "Додати замітку", "Назва замітки") # діалогове вікно створення нової замітки
@@ -60,11 +62,45 @@ def add_tag():
     else:
         print("Ви не вибрали замітку для додавання тега!")
 
+def del_tag():
+    if listnotes.selectedItems():
+        key = listnotes.selectedItems()[0].text()
+        tag = listtags.selectedItems()[0].text()
+        notes[key]["теги"].remove(tag)
+        listtags.clear()
+        listtags.addItems(notes[key]["теги"])
+        with open("data.json", "w", encoding= "utf-8") as file:
+            json.dump(notes, file, sort_keys= True, ensure_ascii= False)
+    else:
+        print("Ви не вибрали замітку для видалення тегу!")
+
+def search_tag():
+    tag = lineEdit.text()
+    if btn_searchtag.text() == "Шукати замітки по тегу" and tag:
+        note_filtered = dict()
+        for note in notes:
+            if tag in notes[note]["теги"]:
+                note_filtered[note] = notes[note]
+        btn_searchtag.setText("Скинути пошук")
+        listnotes.clear()
+        listtags.clear()
+        listnotes.addItems(note_filtered)
+
+    elif btn_searchtag.text() == "Скинути пошук":
+        lineEdit.clear()
+        listnotes.clear()
+        listtags.clear()
+        listnotes.addItems(notes)
+        btn_searchtag.setText("Шукати замітки по тегу")
+        
+
+btn_searchtag.clicked.connect(search_tag)
 btn_createnote.clicked.connect(add_note)
 btn_savenote.clicked.connect(save_note)
 btn_delitenote.clicked.connect(del_note)
 listnotes.itemClicked.connect(show_note)
 btn_addtonote.clicked.connect(add_tag)
+btn_unpickfromnote.clicked.connect(del_tag)
 
 mv.show()
 app.exec_()
