@@ -47,10 +47,24 @@ def del_note():
     else:
         print("Ви не вибрали замітку!")
 
+def add_tag():
+    if listnotes.selectedItems():
+        key = listnotes.selectedItems()[0].text()
+        tag = lineEdit.text() # новий тег
+        if not tag in notes[key]["теги"]: # перевірка наявності тегу в списку тегів
+            notes[key]["теги"].append(tag) # Додаємо в кінець новий тег
+            listtags.addItem(tag) # додаємо у віджет новий тег
+            lineEdit.clear()
+            with open("data.json", "w", encoding= "utf-8") as file:
+                json.dump(notes, file, sort_keys= True, ensure_ascii= False)
+    else:
+        print("Ви не вибрали замітку для додавання тега!")
+
 btn_createnote.clicked.connect(add_note)
 btn_savenote.clicked.connect(save_note)
 btn_delitenote.clicked.connect(del_note)
 listnotes.itemClicked.connect(show_note)
+btn_addtonote.clicked.connect(add_tag)
 
 mv.show()
 app.exec_()
