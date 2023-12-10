@@ -2,6 +2,7 @@ from main import*
 import json
 
 notes = dict()
+messange = QMessageBox()
 
 try:
     with open("data.json", "r", encoding= "utf-8") as file:
@@ -9,6 +10,9 @@ try:
     listnotes.addItems(notes)
 except:
     print("Такого файлу не існує!")
+    messange.setWindowTitle("Назва файлу")
+    messange.setText("Такого файлу не існує!")
+    messange.exec_()
 
 def show_note():
     textEdit.clear()
@@ -23,7 +27,6 @@ def add_note():
         notes[note_name] = {"текст": "", "теги": []} # створюється структура замітки з назвою
         listnotes.addItem(note_name) # назва замітки поміщається у віджет списку заміток
         listtags.addItems(notes[note_name]["теги"]) # теги замітки поміщаються у спимок тегів
-        print(notes)
 
 def save_note():
     if listnotes.selectedItems():
@@ -33,6 +36,9 @@ def save_note():
             json.dump(notes, file, sort_keys= True, ensure_ascii= False)
     else:
         print("Ви не вибрали замітку!")
+        messange.setWindowTitle("Назва замітки")
+        messange.setText("Ви не вибрали замітку!")
+        messange.exec_()
 
 def del_note():
     if listnotes.selectedItems():
@@ -48,6 +54,9 @@ def del_note():
             json.dump(notes, file, sort_keys= True, ensure_ascii= False)
     else:
         print("Ви не вибрали замітку!")
+        messange.setWindowTitle("Назва замітки")
+        messange.setText("Ви не вибрали замітку!")
+        messange.exec_()
 
 def add_tag():
     if listnotes.selectedItems():
@@ -61,6 +70,9 @@ def add_tag():
                 json.dump(notes, file, sort_keys= True, ensure_ascii= False)
     else:
         print("Ви не вибрали замітку для додавання тега!")
+        messange.setWindowTitle("Назва замітки")
+        messange.setText("Ви не вибрали замітку для додавання тега!")
+        messange.exec_()
 
 def del_tag():
     if listnotes.selectedItems():
@@ -73,26 +85,32 @@ def del_tag():
             json.dump(notes, file, sort_keys= True, ensure_ascii= False)
     else:
         print("Ви не вибрали замітку для видалення тегу!")
+        messange.setWindowTitle("Назва замітки")
+        messange.setText("Ви не вибрали замітку для видалення тегу!")
+        messange.exec_()
 
 def search_tag():
     tag = lineEdit.text() # отримуємо назву тегу
     if btn_searchtag.text() == "Шукати замітки по тегу" and tag: # перевірка введення тегу
         note_filtered = dict() # словник відфільтрованих заміток
-        for note in notes:
-            if tag in notes[note]["теги"]:
+        for note in notes: # перебираємо всі замітки у словнику
+            if tag in notes[note]["теги"]: # якщо знашли тег то записуємо записуємо замітку у новий словник 
                 note_filtered[note] = notes[note]
         btn_searchtag.setText("Скинути пошук")
         listnotes.clear()
         listtags.clear()
-        listnotes.addItems(note_filtered)
-
+        listnotes.addItems(note_filtered) # додаємо список відфільтрованих заміток
     elif btn_searchtag.text() == "Скинути пошук":
         lineEdit.clear()
         listnotes.clear()
         listtags.clear()
-        listnotes.addItems(notes)
+        listnotes.addItems(notes) # додаємо всі замітки до віджетів
         btn_searchtag.setText("Шукати замітки по тегу")
-        
+    elif tag == "":
+        messange.setWindowTitle("Назва тега")
+        messange.setText("Ви не ввели тег для пошуку")
+        messange.exec_()
+
 
 btn_searchtag.clicked.connect(search_tag)
 btn_createnote.clicked.connect(add_note)
