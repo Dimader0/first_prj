@@ -115,15 +115,14 @@ def save_in_txt():
     if listnotes.selectedItems():
         key = listnotes.selectedItems()[0].text()
         index = 1
-        for note in notes:
-            if note[0] == key:
-                text = textEdit.toPlainText()
-                with open(str(index)+".txt", "w", encoding= "utf-8") as file:
-                    file.write(note[0]+"\n")
-                    file.write(text+"\n")
-                    for tag in notes[key]["теги"]:
-                        file.write(tag+" ")
-                    file.write("\n")
+        for key, data in notes.items():
+            text = data['текст']
+            with open(str(index)+".txt", "w", encoding= "utf-8") as file:
+                file.write(key+"\n")
+                file.write(text+"\n")
+                for tag in data["теги"]:
+                    file.write(tag+" ")
+                file.write("\n")
             index += 1
     else:
         print("Ви не вибрали замітку!")
